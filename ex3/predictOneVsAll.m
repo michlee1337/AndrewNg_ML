@@ -37,8 +37,6 @@ all_p = X*all_theta'
 
 [w, p] = max(all_p,[],2)
 
-% select the class with the highest probability
-
 
 
 
