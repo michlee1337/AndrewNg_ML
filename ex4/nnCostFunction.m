@@ -85,6 +85,9 @@ d2 = d3*Theta2(:,2:size(Theta2,2)) .* sigmoidGradient(a1 * Theta1')
 Theta1_grad =(Theta1_grad + d2'*a1) / m
 Theta2_grad =(Theta2_grad + d3'*a2) / m
 
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + lambda/m * Theta1(:,2:end);
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + lambda/m * Theta2(:,2:end);
+
 
 
 
