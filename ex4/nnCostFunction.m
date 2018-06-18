@@ -69,16 +69,21 @@ a2 = [ones(m,1) sigmoid(a1 * Theta1')]
 a3 = sigmoid(a2 * Theta2')
 
 for i = 1:num_labels
-  predict = y==i;
-  J = J - (1/m)*sum(((predict.*log(a3(:,i))) + (((1-predict).* log(1-a3(:,i))))));
+  predict(:,i) = y == i;
 end
+
+one = ones(m, num_labels)
+J = sum(sum(-predict.*log(a3)-(one-predict).*log(one-a3)))/m;
 
 J = J + (lambda/(2*m) * (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2))) )
 
-
 % Back Propagation
-% grad = (1/m * sum((sigmoid(X*theta) - y) .* X))' + [0;(lambda/m*theta(2:end))];
 
+d3 = a3 - predict;
+d2 = d3*Theta2(:,2:size(Theta2,2)) .* sigmoidGradient(a1 * Theta1')
+
+Theta1_grad =(Theta1_grad + d2'*a1) / m
+Theta2_grad =(Theta2_grad + d3'*a2) / m
 
 
 
