@@ -63,13 +63,20 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
-layer1 = sigmoid([ones(size(X,1), 1) X] * Theta1');
+% Forward Propagation
+a1 = [ones(m,1) X];
+a2 = [ones(m,1) sigmoid(a1 * Theta1')]
+a3 = sigmoid(a2 * Theta2')
 
-layer2 = sigmoid([ones(size(layer1,1), 1) layer1] * Theta2');
-y_matrix = eye(num_labels)(y,:);
+for i = 1:num_labels
+  predict = y==i;
+  J = J - (1/m)*sum(((predict.*log(a3(:,i))) + (((1-predict).* log(1-a3(:,i))))));
+end
 
-J = (-sum(sum(y_matrix.*log(layer2))) - sum(sum((1-y_matrix).*(log(1-layer2)))))/m;
+J = J + (lambda/(2*m) * (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2))) )
 
+
+% Back Propagation
 % grad = (1/m * sum((sigmoid(X*theta) - y) .* X))' + [0;(lambda/m*theta(2:end))];
 
 
